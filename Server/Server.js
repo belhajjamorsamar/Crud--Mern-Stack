@@ -4,7 +4,7 @@ const app = express();
 
 //connect to db
 mongoose
-	.connect('mongodb://localhost:27017/MernSatckProject', {
+	.connect('mongodb://127.0.0.1:27017/MernSatckProject', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
@@ -18,10 +18,19 @@ mongoose
 //import User model
 const UserModel = require('./models/Users');
 
-app.get('/users', async (req, res) => {
-	const users = await UserModel.find();
-	res.json(users);
+app.get('/users', (req, res) => {
+	UserModel.find().exec((err, users) => {
+		if (err) {
+			console.error('Erreur lors de la recherche des utilisateurs :', err);
+			res.status(500).json({ error: 'Une erreur est survenue lors de la recherche des utilisateurs.' });
+		} else {
+			console.log(users); // Affichez les données dans la console pour vérification
+			res.json(users); // Renvoyez le tableau d'objets directement au format JSON
+		}
+	});
 });
+
+
 
 app.listen('8000', () => {
 	console.log('server work');
