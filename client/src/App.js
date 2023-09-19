@@ -3,37 +3,27 @@ import Axios from 'axios';
 import { useState, useEffect } from 'react';
 
 function App() {
+
+  const api ="http://localhost:3004"
 	const [users, setUsers] = useState([]);
   const[name,setName]=useState("");
   const[age,setAge]=useState("");
   const[email,setEmail]=useState("");
 
 	useEffect(() => {
-		Axios.get('http://localhost:3004/users').then((res) => {
-			console.log(res.data);
-			setUsers(res.data);
-		});
-	}, []);
+		Axios.get(`${api}/users`).then((res) => {setUsers(res.data);});
+	}, [users]);
 
   const createUser =()=>{
-    Axios.post('http://localhost:3004/AddUser',{
-      name:name ,
-      age: age,
-      email :email
-    })
-    .then((res) => {
-			console.log(" User created seccesfully :) ");
-      console.log(res.data)
-			
-		});
-  }
+    Axios.post(`${api}/AddUser`,{
+    name,age,email,
+    }).then((res) => {console.log(res.data)});}
 
 	return (
     
 		<>
     
-
-			{users.map((user) => {
+{users.map((user) => {
 				return (
 					<ul>
 						<li>{user.name}</li>
