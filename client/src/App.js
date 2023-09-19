@@ -1,29 +1,30 @@
 import './App.css';
-import Axios from 'axios'
+import Axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function App() {
+	const [users, setUsers] = useState([]);
 
-Axios.get("http://localhost:3004/users")
-.then(res=>{
-  console.log(res.data)
-})
+	useEffect(() => {
+		Axios.get('http://localhost:3004/users').then((res) => {
+			console.log(res.data);
+			setUsers(res.data);
+		});
+	}, []);
 
-
-
-  return (
-  <div>
-
-    <ul>
-
-  <li>name:ssamar</li>
-  <li>age:22</li>
-  <li>email:dfghjkl</li>
-  
-  </ul>
-
-  </div>
-
-  );
+	return (
+		<>
+			{users.map((user) => {
+				return (
+					<ul>
+						<li>{user.name}</li>
+						<li>{user.age}</li>
+						<li>{user.email}</li>
+					</ul>
+				);
+			})}
+		</>
+	);
 }
 
 export default App;
